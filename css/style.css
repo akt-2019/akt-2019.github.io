@@ -1,10 +1,17 @@
 .wrapper{
     background-color:rgb(200, 232, 252);
-    position: fixed;
+    position: relative;
     top:0;
     left:0;
     right:0;
     font: 1em serif;
     text-shadow: 2px 2px 5px gray;
     text-align:start;
+    overflow:auto;
+}
+
+.sentences{
+    font: 18px sans-serif;
+    position: relative;
+    left:10px;
 }
