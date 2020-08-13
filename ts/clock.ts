@@ -9,20 +9,27 @@ let intervalHour: number = getRadian(30);
 let lenSecond = 200;
 let lenMinute = 185;
 let lenHour = 100;
+let date=new Date();
+// let second = Math.floor((Date.now() / 1000) % 60);
+// let minute = Math.floor((Date.now() / 60000) % 60);
+// let hour = Math.floor((Date.now() / 3600000) % 12)-3;
+let second=date.getSeconds();
+let minute=date.getMinutes();
+let hour=date.getHours();
 
 posSecond = {
-    x: 0,
-    y: lenSecond
+    x: lenSecond * Math.sin(getRadian(6*second)),
+    y: lenSecond * Math.cos(getRadian(6*second))
 };
 
 posMinute = {
-    x: 0,
-    y: lenMinute
+    x: lenMinute * Math.sin(getRadian(6*minute)),
+    y: lenMinute * Math.cos(getRadian(6*minute))
 };
 
 posHour = {
-    x: 0,
-    y: lenHour
+    x: lenHour * Math.sin(getRadian(30*hour)),
+    y: lenHour * Math.cos(getRadian(30*hour))
 };
 
 drawClockHands();
@@ -35,22 +42,31 @@ function drawClockHands() {
 }
 
 function calculateSecondPos() {
+    second++;
     let newPos: Coordinate = {
         x: posSecond.x * Math.cos(intervalSecond) + posSecond.y * Math.sin(intervalSecond),
         y: posSecond.y * Math.cos(intervalSecond) - posSecond.x * Math.sin(intervalSecond)
     };
     posSecond = newPos;
+    if(second%60==0){
+        calculateMinutePos();
+    }
 }
 
 function calculateMinutePos() {
+    minute++;
     let newPos: Coordinate = {
         x: posMinute.x * Math.cos(intervalMinute) + posMinute.y * Math.sin(intervalMinute),
         y: posMinute.y * Math.cos(intervalMinute) - posMinute.x * Math.sin(intervalMinute)
     };
     posMinute = newPos;
+    if(minute%60==0){
+        calculateHourPos();
+    }
 }
 
 function calculateHourPos() {
+    hour++;
     let newPos: Coordinate = {
         x: posHour.x * Math.cos(intervalHour) + posHour.y * Math.sin(intervalHour),
         y: posHour.y * Math.cos(intervalHour) - posHour.x * Math.sin(intervalHour)
@@ -59,8 +75,6 @@ function calculateHourPos() {
 }
 
 setInterval(calculateSecondPos, 1000);
-setInterval(calculateMinutePos, 60000);
-setInterval(calculateHourPos,3600000);
 setInterval(drawClockHands, 1000);
 
 function getRadian(degree: number): number {
