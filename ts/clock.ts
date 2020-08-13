@@ -14,6 +14,9 @@ let second=date.getSeconds();
 let minute=date.getMinutes();
 let hour=date.getHours();
 
+canvas.width=window.screen.width/2;
+canvas.height=canvas.width;
+
 posSecond = {
     x: lenSecond * Math.sin(getRadian(6*second)),
     y: lenSecond * Math.cos(getRadian(6*second))

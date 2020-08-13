@@ -11,12 +11,11 @@ var lenSecond = 200;
 var lenMinute = 185;
 var lenHour = 100;
 var date = new Date();
-// let second = Math.floor((Date.now() / 1000) % 60);
-// let minute = Math.floor((Date.now() / 60000) % 60);
-// let hour = Math.floor((Date.now() / 3600000) % 12)-3;
 var second = date.getSeconds();
 var minute = date.getMinutes();
 var hour = date.getHours();
+canvas.width = window.screen.width / 2;
+canvas.height = canvas.width;
 posSecond = {
     x: lenSecond * Math.sin(getRadian(6 * second)),
     y: lenSecond * Math.cos(getRadian(6 * second))
