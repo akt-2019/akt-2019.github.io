@@ -3,10 +3,13 @@ var canvas = document.getElementById("clock-canvas");
 var ctx = canvas.getContext("2d");
 var posSecond;
 var posMinute;
+var posHour;
 var intervalSecond = getRadian(6);
-var intervalMinute = getRadian(30);
+var intervalMinute = getRadian(6);
+var intervalHour = getRadian(30);
 var lenSecond = 200;
 var lenMinute = 185;
+var lenHour = 100;
 posSecond = {
     x: 0,
     y: lenSecond
@@ -15,34 +18,42 @@ posMinute = {
     x: 0,
     y: lenMinute
 };
-var tmrSecond = setInterval(function () {
+posHour = {
+    x: 0,
+    y: lenHour
+};
+drawClockHands();
+function drawClockHands() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#ff0000";
+    drawClockHand(posSecond, "#FF0000");
+    drawClockHand(posMinute, "#00FF00");
+    drawClockHand(posHour, "#0000FF");
+}
+function calculateSecondPos() {
     var newPos = {
         x: posSecond.x * Math.cos(intervalSecond) + posSecond.y * Math.sin(intervalSecond),
         y: posSecond.y * Math.cos(intervalSecond) - posSecond.x * Math.sin(intervalSecond)
     };
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, canvas.height / 2);
-    ctx.lineTo(convertX(newPos.x), convertY(newPos.y));
-    ctx.closePath();
-    ctx.stroke();
     posSecond = newPos;
-}, 1000);
-var tmrMinute = setInterval(function () {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.strokeStyle = "#00ff00";
+}
+function calculateMinutePos() {
     var newPos = {
-        x: posSecond.x * Math.cos(intervalMinute) + posSecond.y * Math.sin(intervalMinute),
-        y: posSecond.y * Math.cos(intervalMinute) - posSecond.x * Math.sin(intervalMinute)
+        x: posMinute.x * Math.cos(intervalMinute) + posMinute.y * Math.sin(intervalMinute),
+        y: posMinute.y * Math.cos(intervalMinute) - posMinute.x * Math.sin(intervalMinute)
     };
-    ctx.beginPath();
-    ctx.moveTo(canvas.width / 2, canvas.height / 2);
-    ctx.lineTo(convertX(newPos.x), convertY(newPos.y));
-    ctx.closePath();
-    ctx.stroke();
-    posSecond = newPos;
-}, 60000);
+    posMinute = newPos;
+}
+function calculateHourPos() {
+    var newPos = {
+        x: posHour.x * Math.cos(intervalHour) + posHour.y * Math.sin(intervalHour),
+        y: posHour.y * Math.cos(intervalHour) - posHour.x * Math.sin(intervalHour)
+    };
+    posHour = newPos;
+}
+setInterval(calculateSecondPos, 1000);
+setInterval(calculateMinutePos, 60000);
+setInterval(calculateHourPos, 3600000);
+setInterval(drawClockHands, 1000);
 function getRadian(degree) {
     return (Math.PI * degree) / 180;
 }
@@ -51,5 +62,16 @@ function convertX(orgX) {
 }
 function convertY(orgY) {
     return canvas.height / 2 - orgY;
+}
+function drawLine(x, y, targetX, targetY, style) {
+    ctx.strokeStyle = style;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+    ctx.lineTo(targetX, targetY);
+    ctx.closePath();
+    ctx.stroke();
+}
+function drawClockHand(target, style) {
+    drawLine(canvas.width / 2, canvas.height / 2, convertX(target.x), convertY(target.y), style);
 }
 //# sourceMappingURL=clock.js.map

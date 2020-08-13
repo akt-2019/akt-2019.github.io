@@ -1,72 +1,94 @@
-let canvas:HTMLCanvasElement=document.getElementById("clock-canvas") as HTMLCanvasElement;
-let ctx=canvas.getContext("2d") as CanvasRenderingContext2D;
-let posSecond:Coordinate;
-let posMinute:Coordinate;
-let intervalSecond:number=getRadian(6);
-let intervalMinute:number=getRadian(30);
-let lenSecond=200;
-let lenMinute=185;
+let canvas: HTMLCanvasElement = document.getElementById("clock-canvas") as HTMLCanvasElement;
+let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
+let posSecond: Coordinate;
+let posMinute: Coordinate;
+let posHour: Coordinate;
+let intervalSecond: number = getRadian(6);
+let intervalMinute: number = getRadian(6);
+let intervalHour: number = getRadian(30);
+let lenSecond = 200;
+let lenMinute = 185;
+let lenHour = 100;
 
-posSecond={
-    x:0,
-    y:lenSecond
+posSecond = {
+    x: 0,
+    y: lenSecond
 };
 
-posMinute={
-    x:0,
-    y:lenMinute
+posMinute = {
+    x: 0,
+    y: lenMinute
 };
 
-let tmrSecond=setInterval(function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle="#ff0000";
-    let newPos:Coordinate={
-        x:posSecond.x*Math.cos(intervalSecond)+posSecond.y*Math.sin(intervalSecond),
-        y:posSecond.y*Math.cos(intervalSecond)-posSecond.x*Math.sin(intervalSecond)
+posHour = {
+    x: 0,
+    y: lenHour
+};
+
+drawClockHands();
+
+function drawClockHands() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    drawClockHand(posSecond, "#FF0000");
+    drawClockHand(posMinute, "#00FF00");
+    drawClockHand(posHour, "#0000FF");
+}
+
+function calculateSecondPos() {
+    let newPos: Coordinate = {
+        x: posSecond.x * Math.cos(intervalSecond) + posSecond.y * Math.sin(intervalSecond),
+        y: posSecond.y * Math.cos(intervalSecond) - posSecond.x * Math.sin(intervalSecond)
     };
+    posSecond = newPos;
+}
+
+function calculateMinutePos() {
+    let newPos: Coordinate = {
+        x: posMinute.x * Math.cos(intervalMinute) + posMinute.y * Math.sin(intervalMinute),
+        y: posMinute.y * Math.cos(intervalMinute) - posMinute.x * Math.sin(intervalMinute)
+    };
+    posMinute = newPos;
+}
+
+function calculateHourPos() {
+    let newPos: Coordinate = {
+        x: posHour.x * Math.cos(intervalHour) + posHour.y * Math.sin(intervalHour),
+        y: posHour.y * Math.cos(intervalHour) - posHour.x * Math.sin(intervalHour)
+    };
+    posHour = newPos;
+}
+
+setInterval(calculateSecondPos, 1000);
+setInterval(calculateMinutePos, 60000);
+setInterval(calculateHourPos,3600000);
+setInterval(drawClockHands, 1000);
+
+function getRadian(degree: number): number {
+    return (Math.PI * degree) / 180
+}
+
+function convertX(orgX: number): number {
+    return canvas.width / 2 + orgX;
+}
+
+function convertY(orgY: number): number {
+    return canvas.height / 2 - orgY;
+}
+
+interface Coordinate {
+    x: number;
+    y: number;
+}
+
+function drawLine(x: number, y: number, targetX: number, targetY: number, style: string) {
+    ctx.strokeStyle = style;
     ctx.beginPath();
-    ctx.moveTo(canvas.width/2,canvas.height/2);
-    ctx.lineTo(
-        convertX(newPos.x),
-        convertY(newPos.y)
-    );
+    ctx.moveTo(x, y);
+    ctx.lineTo(targetX, targetY);
     ctx.closePath();
     ctx.stroke();
-    posSecond=newPos;
-
-},1000);
-
-let tmrMinute=setInterval(function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height);
-    ctx.strokeStyle="#00ff00";
-    let newPos:Coordinate={
-        x:posSecond.x*Math.cos(intervalMinute)+posSecond.y*Math.sin(intervalMinute),
-        y:posSecond.y*Math.cos(intervalMinute)-posSecond.x*Math.sin(intervalMinute)
-    };
-    ctx.beginPath();
-    ctx.moveTo(canvas.width/2,canvas.height/2);
-    ctx.lineTo(
-        convertX(newPos.x),
-        convertY(newPos.y)
-    );
-    ctx.closePath();
-    ctx.stroke();
-    posSecond=newPos;
-},60000);
-
-function getRadian(degree:number):number{
-    return (Math.PI*degree)/180
 }
 
-function convertX(orgX:number):number{
-    return canvas.width/2+orgX;
-}
-
-function convertY(orgY:number):number{
-    return canvas.height/2-orgY;
-}
-
-interface Coordinate{
-    x:number;
-    y:number;
+function drawClockHand(target: Coordinate, style: string) {
+    drawLine(canvas.width / 2, canvas.height / 2, convertX(target.x), convertY(target.y), style);
 }
