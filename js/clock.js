@@ -1,5 +1,7 @@
 "use strict";
 var canvas = document.getElementById("clock-canvas");
+canvas.width = window.screen.width / 2.5;
+canvas.height = canvas.width;
 var ctx = canvas.getContext("2d");
 var posSecond;
 var posMinute;
@@ -7,15 +9,13 @@ var posHour;
 var intervalSecond = getRadian(6);
 var intervalMinute = getRadian(6);
 var intervalHour = getRadian(30);
-var lenSecond = 200;
-var lenMinute = 185;
-var lenHour = 100;
+var lenSecond = canvas.width * 0.9 / 2;
+var lenMinute = canvas.width * 0.8 / 2;
+var lenHour = canvas.width * 0.5 / 2;
 var date = new Date();
 var second = date.getSeconds();
 var minute = date.getMinutes();
 var hour = date.getHours();
-canvas.width = window.screen.width / 2;
-canvas.height = canvas.width;
 posSecond = {
     x: lenSecond * Math.sin(getRadian(6 * second)),
     y: lenSecond * Math.cos(getRadian(6 * second))

@@ -1,4 +1,6 @@
 let canvas: HTMLCanvasElement = document.getElementById("clock-canvas") as HTMLCanvasElement;
+canvas.width=window.screen.width/2.5;
+canvas.height=canvas.width;
 let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 let posSecond: Coordinate;
 let posMinute: Coordinate;
@@ -6,16 +8,15 @@ let posHour: Coordinate;
 let intervalSecond: number = getRadian(6);
 let intervalMinute: number = getRadian(6);
 let intervalHour: number = getRadian(30);
-let lenSecond = 200;
-let lenMinute = 185;
-let lenHour = 100;
+let lenSecond = canvas.width*0.9/2;
+let lenMinute = canvas.width*0.8/2;
+let lenHour = canvas.width*0.5/2;
 let date=new Date();
 let second=date.getSeconds();
 let minute=date.getMinutes();
 let hour=date.getHours();
 
-canvas.width=window.screen.width/2;
-canvas.height=canvas.width;
+
 
 posSecond = {
     x: lenSecond * Math.sin(getRadian(6*second)),
