@@ -1,2 +1,1 @@
-*.log
-.vscode/*.json
+**/*.pdn

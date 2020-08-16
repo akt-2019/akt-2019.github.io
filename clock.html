@@ -16,8 +16,17 @@
     <noscript>
         <p>JavaScriptを有効にしてください。</p>
     </noscript>
-    <canvas id="clock-canvas">
-    </canvas>
+    <div id="clock-area" style="position:relative;">
+        <img id="clock-background-image" src="./img/clock.png">
+        <canvas id="clock-canvas" style="position:absolute; top:0; left:0;">
+        </canvas>
+
+    </div>
+    <div id="monitor" style="position: relative;">
+        <img id="monitor-background-image" src="./img/monitor.png">
+        <div id="calc-log" style="position:absolute;">
+        </div>
+    </div>
     <p><a href="./index.html">トップに戻る</a></p>
     <script src="js/clock.js"></script>
 </body>
