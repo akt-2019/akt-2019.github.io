@@ -5,19 +5,22 @@ var bgClock = document.getElementById("clock-background-image");
 var bgMonitor = document.getElementById("monitor-background-image");
 var ctx = canvas.getContext("2d");
 onWindowResize();
+var updateSecond = 1;
+var updateMinute = 1;
+var updateHour = 5;
 var posSecond;
 var posMinute;
 var posHour;
-var intervalSecond = getRadian(6);
-var intervalMinute = getRadian(6);
-var intervalHour = getRadian(30);
+var intervalSecond = getRadian(6) / updateSecond;
+var intervalMinute = getRadian(6) / updateMinute;
+var intervalHour = getRadian(30) / updateHour;
 var lenSecond = canvas.width * 0.9 / 2;
 var lenMinute = canvas.width * 0.8 / 2;
 var lenHour = canvas.width * 0.5 / 2;
 var date = new Date();
-var second = date.getSeconds();
-var minute = date.getMinutes();
-var hour = date.getHours();
+var second = date.getSeconds() + (Math.floor(date.getMilliseconds() / (1000 / updateSecond)) / updateSecond);
+var minute = date.getMinutes() + (Math.floor(date.getSeconds() / (60 / updateMinute)) / updateMinute);
+var hour = date.getHours() + (Math.floor(date.getMinutes() / (60 / updateHour)) / updateHour);
 var logSecond;
 var logMinute;
 var logHour;
@@ -33,6 +36,9 @@ posHour = {
     x: lenHour * Math.sin(getRadian(30 * hour)),
     y: lenHour * Math.cos(getRadian(30 * hour))
 };
+logSecond = "seconds: newX = " + posSecond.x.toFixed(2) + " = oldY:" + lenSecond.toFixed(2) + "*sin(" + (intervalSecond * second).toFixed(2) + ") \r\n seconds: newY = " + posSecond.y.toFixed(2) + " = oldY:" + lenSecond.toFixed(2) + "*cos(" + (intervalSecond * second).toFixed(2) + ")\r\n";
+logMinute = "minutes: newX = " + posMinute.x.toFixed(2) + " = oldY:" + lenMinute.toFixed(2) + "*sin(" + (intervalMinute * minute).toFixed(2) + ") \r\n minutes: newY = " + posMinute.y.toFixed(2) + " = oldY:" + lenMinute.toFixed(2) + "*cos(" + (intervalMinute * minute).toFixed(2) + ")\r\n";
+logHour = "hours: newX = " + posHour.x.toFixed(2) + " = oldY:" + lenHour.toFixed(2) + "*sin(" + (intervalHour * hour).toFixed(2) + ") \r\n hours: newY = " + posHour.y.toFixed(2) + " = oldY:" + lenHour.toFixed(2) + "*cos(" + (intervalHour * hour).toFixed(2) + ")\r\n";
 drawClockHands();
 window.onresize = onWindowResize;
 function drawClockHands() {
@@ -40,42 +46,43 @@ function drawClockHands() {
     drawClockHand(posSecond, "#FF0000");
     drawClockHand(posMinute, "#00FF00");
     drawClockHand(posHour, "#0000FF");
-    log_area.innerText = logSecond + logMinute;
+    log_area.innerText = logSecond + logMinute + logHour;
 }
 function calculateSecondPos() {
-    second++;
+    second += (1 / updateSecond);
     var newPos = {
         x: posSecond.x * Math.cos(intervalSecond) + posSecond.y * Math.sin(intervalSecond),
         y: posSecond.y * Math.cos(intervalSecond) - posSecond.x * Math.sin(intervalSecond)
     };
-    logSecond = "sec: newX = " + newPos.x.toFixed(2) + " = oldX:" + posSecond.x.toFixed(2) + "*cos(" + intervalSecond.toFixed(2) + ")+oldY:" + posSecond.y.toFixed(2) + "*sin(" + intervalSecond.toFixed(2) + ") \r\n sec: newY = " + newPos.y.toFixed(2) + " = oldY:" + posSecond.y.toFixed(2) + "*cos(" + intervalSecond.toFixed(2) + ")-oldX:" + posSecond.x.toFixed(2) + "*sin(" + intervalSecond.toFixed(2) + ")\r\n";
+    logSecond = "seconds: newX = " + newPos.x.toFixed(2) + " = oldX:" + posSecond.x.toFixed(2) + "*cos(" + intervalSecond.toFixed(2) + ")+oldY:" + posSecond.y.toFixed(2) + "*sin(" + intervalSecond.toFixed(2) + ") \r\n seconds: newY = " + newPos.y.toFixed(2) + " = oldY:" + posSecond.y.toFixed(2) + "*cos(" + intervalSecond.toFixed(2) + ")-oldX:" + posSecond.x.toFixed(2) + "*sin(" + intervalSecond.toFixed(2) + ")\r\n";
     posSecond = newPos;
-    if (second % 60 == 0) {
+    if (second % (60 / updateMinute) == 0) {
         calculateMinutePos();
     }
 }
 function calculateMinutePos() {
-    minute++;
+    minute += (1 / updateMinute);
     var newPos = {
         x: posMinute.x * Math.cos(intervalMinute) + posMinute.y * Math.sin(intervalMinute),
         y: posMinute.y * Math.cos(intervalMinute) - posMinute.x * Math.sin(intervalMinute)
     };
-    logMinute = "min: newX = " + newPos.x.toFixed(2) + " = oldX:" + posSecond.x.toFixed(2) + "*cos(" + intervalMinute.toFixed(2) + ")+oldY:" + posSecond.y.toFixed(2) + "*sin(" + intervalMinute.toFixed(2) + ") \r\n min: newY = " + newPos.y.toFixed(2) + " = oldY:" + posSecond.y.toFixed(2) + "*cos(" + intervalMinute.toFixed(2) + ")-oldX:" + posSecond.x.toFixed(2) + "*sin(" + intervalMinute.toFixed(2) + ")\r\n";
+    logMinute = "minutes: newX = " + newPos.x.toFixed(2) + " = oldX:" + posMinute.x.toFixed(2) + "*cos(" + intervalMinute.toFixed(2) + ")+oldY:" + posMinute.y.toFixed(2) + "*sin(" + intervalMinute.toFixed(2) + ") \r\n minutes: newY = " + newPos.y.toFixed(2) + " = oldY:" + posMinute.y.toFixed(2) + "*cos(" + intervalMinute.toFixed(2) + ")-oldX:" + posMinute.x.toFixed(2) + "*sin(" + intervalMinute.toFixed(2) + ")\r\n";
     posMinute = newPos;
-    if (minute % 60 == 0) {
+    if (minute % (60 / updateHour) == 0) {
         calculateHourPos();
     }
 }
 function calculateHourPos() {
-    hour++;
+    hour += (1 / updateHour);
     var newPos = {
         x: posHour.x * Math.cos(intervalHour) + posHour.y * Math.sin(intervalHour),
         y: posHour.y * Math.cos(intervalHour) - posHour.x * Math.sin(intervalHour)
     };
+    logHour = "hours: newX = " + newPos.x.toFixed(2) + " = oldX:" + posHour.x.toFixed(2) + "*cos(" + intervalHour.toFixed(2) + ")+oldY:" + posHour.y.toFixed(2) + "*sin(" + intervalHour.toFixed(2) + ") \r\n hours: newY = " + newPos.y.toFixed(2) + " = oldY:" + posHour.y.toFixed(2) + "*cos(" + intervalHour.toFixed(2) + ")-oldX:" + posHour.x.toFixed(2) + "*sin(" + intervalHour.toFixed(2) + ")\r\n";
     posHour = newPos;
 }
-setInterval(calculateSecondPos, 1000);
-setInterval(drawClockHands, 1000);
+setInterval(calculateSecondPos, 1000 / updateSecond);
+setInterval(drawClockHands, 10);
 function getRadian(degree) {
     return (Math.PI * degree) / 180;
 }
