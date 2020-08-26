@@ -137,6 +137,7 @@ function onWindowResize(){
         canvas.width=window.screen.width/1.5;
         bgMonitor.width=window.screen.width;
         log_area.style.top=(bgMonitor.width/24).toString()+"px";
+        log_area.style.fontSize=(window.screen.width/750).toString()+"em";
     }else{
         canvas.width=window.screen.width/3;
         bgMonitor.width=window.screen.width/2.5;
