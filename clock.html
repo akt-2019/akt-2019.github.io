@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html>
+<html lang="ja">
 
 <head>
-    <title>Aktのアルゴリズム実践サイト</title>
+    <title>アナログ時計</title>
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="./favicon.ico">
     <link rel="stylesheet" href="css/style.css">
@@ -12,22 +12,25 @@
     <div class="wrapper">
         <h1>Aktのアルゴリズム実践サイト</h1>
     </div>
-    <h1>アナログ時計</h1>
-    <noscript>
-        <p>JavaScriptを有効にしてください。</p>
-    </noscript>
-    <div id="clock-area" style="position:relative;">
-        <img id="clock-background-image" src="./img/clock.png">
-        <canvas id="clock-canvas" style="position:absolute; top:0; left:0;">
-        </canvas>
+    <div class="content">
+        <h1>アナログ時計</h1>
+        <noscript>
+            <p>JavaScriptを有効にしてください。</p>
+        </noscript>
+        <div id="clock-area" style="position:relative;">
+            <img id="clock-background-image" src="./img/clock.png">
+            <canvas id="clock-canvas" style="position:absolute; top:0; left:0;">
+            </canvas>
 
-    </div>
-    <div id="monitor" style="position: relative;">
-        <img id="monitor-background-image" src="./img/monitor.png">
-        <div id="calc-log" style="position:absolute;">
         </div>
+        <div id="monitor" style="position: relative;">
+            <img id="monitor-background-image" src="./img/monitor.png">
+            <div id="calc-log" style="position:absolute;">
+            </div>
+        </div>
+        <p><a href="./index.html">トップに戻る</a></p>
     </div>
-    <p><a href="./index.html">トップに戻る</a></p>
+
     <script src="js/clock.js"></script>
 </body>
 

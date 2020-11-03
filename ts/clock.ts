@@ -5,7 +5,7 @@ let bgMonitor: HTMLImageElement=document.getElementById("monitor-background-imag
 
 let ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-onWindowResize();
+
 
 let updateSecond:number = 1;
 let updateMinute:number = 1;
@@ -31,6 +31,8 @@ let hour=date.getHours()+(Math.floor(date.getMinutes()/(60/updateHour))/updateHo
 let logSecond:string;
 let logMinute:string;
 let logHour:string;
+
+onWindowResize();
 
 posSecond = {
     x: lenSecond * Math.sin(getRadian(6*second)),
