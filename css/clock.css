@@ -1,0 +1,24 @@
+#clock-canvas-area{
+    position:absolute;
+    display: flex;
+    width: auto;
+    height: auto;
+    left:50px;
+    justify-content: center;
+    align-items: center;
+    top:0px;
+    left:0px;
+}
+
+#clock-area{
+    position: relative;
+    width:640px;
+    height:640px;
+}
+
+#monitor{
+    position: relative;
+    width:640px;
+    height:640px;
+}
+
